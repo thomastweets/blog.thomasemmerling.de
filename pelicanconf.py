@@ -5,6 +5,9 @@ from __future__ import unicode_literals
 AUTHOR = u'Thomas Emmerling'
 SITENAME = u'thomastweets'
 SITEURL = ''
+LOCALE = u'en_US.utf8'
+
+THEME = "themes/svbhack"
 
 PATH = 'content'
 
@@ -19,15 +22,13 @@ TRANSLATION_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
-# Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+TWITTER_USERNAME = "thomastweets"
+GITHUB_URL = "https://github.com/thomastweets"
+USER_LOGO_URL = "https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140"
+DISQUS_SITENAME = "thomastweets"
 
-# Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+STATIC_PATHS = ['images', 'extra/CNAME']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
 DEFAULT_PAGINATION = 10
 
