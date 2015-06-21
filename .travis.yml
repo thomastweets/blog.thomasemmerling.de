@@ -5,6 +5,7 @@ branches:
 install:
 - pip install pelican
 - pip install ghp-import
+- pip install markdown
 script:
 - make publish
 - 'make github 2> /dev/null'
