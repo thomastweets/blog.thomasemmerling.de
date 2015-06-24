@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Thomas Emmerling'
 SITENAME = u'thomastweets'
-SITEURL = ''
+SITEURL = 'http://localhost:8000'
 TAGLINE = 'notes on data analysis, programming, and the rest'
 LOCALE = u'en_US.utf8'
 
