@@ -1,5 +1,6 @@
 Title: Automatic Pelican publishing on GitHub Pages via TravisCI
 Date: 2015-06-27
+Modified: 2015-06-28
 Category: Tech
 Tags: devops, Travis CI, GitHub Pages, Pelican, git, continuous integration
 
@@ -58,5 +59,7 @@ github: publish
 	ghp-import -n $(OUTPUTDIR)
 	@git push -fq https://${GH_TOKEN}@github.com/$(TRAVIS_REPO_SLUG).git gh-pages > /dev/null
 ```
+
+- Add the ```.travis.yml``` file and the ```Makefile``` to your git repository, commit, and push to GitHub.
 
 Now, if all went well, after a few minutes you should see a successful build in Travis CI and the new version of your homepage/blog and the ```.github.io``` address (or in my case the custom domain).
