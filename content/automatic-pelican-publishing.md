@@ -62,4 +62,4 @@ github: publish
 
 - Add the ```.travis.yml``` file and the ```Makefile``` to your git repository, commit, and push to GitHub.
 
-Now, if all went well, after a few minutes you should see a successful build in Travis CI and the new version of your homepage/blog and the ```.github.io``` address (or in my case the custom domain).
+Now, if all went well, after a few minutes you should see a successful build in Travis CI and the new version of your homepage/blog at the ```.github.io``` address (or in my case the custom domain).
