@@ -52,7 +52,7 @@ env:
   - secure: "A4MpKClryaExBapCaXO3bgATD1KK/SmrdmPz7vk+6aUcJbOnQ/r2A1xjtCUv09PWW+QlA8SRBV626H7tfIONlXwLIn9tt6ZA419uoUWMs8Z2DsLvpHZtmP4TVi4Vi192TQDGqGwCh48aakhHlzWm0DTQKtn2MIJuUGOVOeT8DVhvT0jLOxYLAiRRuJI4OR6hVzHWH0Wa8U2BLC+iNsWn+RKro/HzzilY9p62nAahWe0toqltazQHq8AFMbc9BFuucMbfU/fpPYq1tesacQZG1gUFhs2TG1v7addJY63E0jaQ6jWSLgNdMibEvwmjrkKIeqF0E7J1/xZfoNg2KQpVFARqDkl4NOaf6T4inCaBAlvyxVQ6JszdkasM2AX3zzrg/Ph4ooRQ9sxdshq6g69tWbuDWkUGJMEfcKGfH9cbATeR87TXZZo0J5WajzNae1+zv86E2tVYmQM7wJwdve48wi6q+QpGWShMrT5VVOyLZ5txSYDPKgjCU7LrKqWmwVqEeZC8b49rSam6vsC1QAKsMQ+oiseZFuVAh+ZMpW9Tes9kSSQ1wX/zSepM3jbv+1dIpsjrJNZgQasR/yLAM7QjLQz8TwYG2LNPtOG/gWwdA/txLqGFAWnEgqFXeykbLgFwuFucdRe9I3yFi5VLTbwXw6FonWrjWOvSzKzNydP+fTw="
 ```
 
-- In the ```Makefile``` in the root directory add (or modify) the ```github``` subcommand (this makes the ```make github``` command in the ```.travis.yml``` file work):
+- In the ```Makefile``` in the root directory add (or change) the ```github``` subcommand (this makes the ```make github``` command in the ```.travis.yml``` file work):
 
 ```bash
 github: publish
@@ -62,4 +62,4 @@ github: publish
 
 - Add the ```.travis.yml``` file and the ```Makefile``` to your git repository, commit, and push to GitHub.
 
-Now, if all went well, after a few minutes you should see a successful build in Travis CI and the new version of your homepage/blog at the ```.github.io``` address (or in my case the custom domain).
+Now, if all went well, after some minutes you should see a successful build in Travis CI and the new version of your homepage/blog at the ```.github.io``` address (or in my case the custom domain).
