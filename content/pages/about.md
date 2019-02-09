@@ -1,7 +1,7 @@
 Title: About
-Date: 2015-06-24
+Date: 2019-02-09
 
-I am a PhD student in the [Department of Cognitive Neuroscience](http://www.maastrichtuniversity.nl/web/Faculties/PsychologyAndNeuroscience/Theme/Research/DepCognitiveNeuroscience.htm) at [Maastricht University](http://www.maastrichtuniversity.nl/) in Maastricht, Netherlands.
+I am working at [Brain Products](https://www.brainproducts.com/), an awesome company specialised in hard- and software for [EEG](https://en.wikipedia.org/wiki/Electroencephalography) research.
 
 You can find me on [Twitter](https://twitter.com/thomastweets), [LinkedIn](https://www.linkedin.com/in/thomasemmerling), and [GitHub](https://github.com/thomastweets).
 
