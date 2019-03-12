@@ -36,8 +36,8 @@ SOCIAL = (('fa-twitter-square', 'http://twitter.com/thomastweets'),
           ('fa-linkedin-square', 'https://www.linkedin.com/in/thomasemmerling'),
           ('fa-github-square', 'http://github.com/thomastweets'),)
 
-STATIC_PATHS = ['images', 'extra/CNAME']
-EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
+STATIC_PATHS = ['images', 'extra/CNAME', 'extra/keybase.txt']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'}, 'extra/keybase.txt': {'path': 'keybase.txt'},}
 
 DEFAULT_PAGINATION = 10
 
