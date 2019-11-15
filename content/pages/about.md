@@ -1,7 +1,7 @@
 Title: About
-Date: 2019-02-09
+Date: 2019-11-15
 
-I work at [Brain Products](https://www.brainproducts.com/), an awesome company specialised in hard- and software for [EEG](https://en.wikipedia.org/wiki/Electroencephalography) research.
+I work at [lingoking](https://www.lingoking.com/).
 
 You can find me on [Twitter](https://twitter.com/thomastweets), [LinkedIn](https://www.linkedin.com/in/thomasemmerling), and [GitHub](https://github.com/thomastweets).
 
