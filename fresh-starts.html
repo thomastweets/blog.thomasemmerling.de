@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="">
+
+  <title>
+    thomastweets
+&ndash; Fresh Starts  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/fresh-starts.html">Fresh Starts</a></h3>
+  </div>
+  <div class="article_text">
+    <p>OK, this is the first day of the rest of my blog life. Over the last years I had a couple of blogs but none survived all the VPS reinstalls or migrations.
+This time, however, I chose to host on <a href="https://pages.github.com/">GitHub Pages</a>, so that the blog is independent of any <a href="https://en.wikipedia.org/wiki/DevOps">devops</a> experiments I pursue and will hopefully last longer.</p>
+<p>I think that the first post should probably be about the technology that is driving this new blog. So let's start!</p>
+<h3>GitHub Pages</h3>
+<p>Venerable GitHub offers not only the probably most widely used service to host git repositories but also to host (raw html) data if they are present in certain repositories of your GitHub account or a branch called <code>gh-pages</code>. If you want to know more about it <a href="https://help.github.com/categories/github-pages-basics/">this</a> should help you out. You might wonder why you are still looking at the domain <a href="http://blog.thomasemmerling.de">blog.thomasemmerling.de</a> and not <a href="https://thomastweets.github.io/blog.thomasemmerling.de/">thomastweets.github.io/blog.thomasemmerling.de/</a>: there is an easy way of adding a <a href="https://en.wikipedia.org/wiki/CNAME_record">CNAME record</a> to your <a href="https://en.wikipedia.org/wiki/DNS_zone">DNS zone file</a> and then add a file called <code>CNAME</code> to your git repository containing your custom domain (you can read more about that <a href="https://help.github.com/articles/about-custom-domains-for-github-pages-sites/">here</a>).</p>
+<h3>Pelican</h3>
+<p>Of course you could just go ahead and start to write HTML that will be your new homepage/blog. Although I like the back-to-the-roots mentality of it this approach it has quite some overhead to maintain some visual aesthetics. This is where <em>static site generators</em> come in. You can find a quite exhaustive list of static site generators at <a href="https://staticsitegenerators.net/">staticsitegenerators.net</a>. As I really like Python I chose <a href="http://getpelican.com/">Pelican</a>. You can choose from a lot available <a href="https://github.com/getpelican/pelican-themes">themes</a> or, of course, write your own. I use the nice <a href="https://svbtle.com/">svbtle</a>-like <a href="https://github.com/gfidente/pelican-svbhack">svbhack</a> by <a href="http://giuliofidente.com/">Guilio Fidente</a>. I like the fresh and clean looks of it.</p>
+<p>I stop here for today. In the next post I am going to write about a nice way to automatize the publishing process using <a href="https://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a>.</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Sun 21 June 2015</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/news.html">News</a>
+    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "fresh-starts.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

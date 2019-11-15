@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="devops, Travis CI, GitHub Pages, git, continuous integration, LaTeX, CV">
+
+  <title>
+    thomastweets
+&ndash; Automatic LaTeX CV publishing on GitHub Pages via TravisCI  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/automatic-latex-cv-publishing-on-github-pages-via-travisci.html">Automatic LaTeX CV publishing on GitHub Pages via TravisCI</a></h3>
+  </div>
+  <div class="article_text">
+    <p>Recently, I wanted to update my CV and as I had good experiences with <em>LaTeX</em> for writing my <a href="http://dx.doi.org/10.13140/RG.2.1.1129.0644">diploma thesis</a> I thought to give it a try for typesetting my CV, too. I started to remember that keeping the full LaTeX stack up-to-date and, more importantly, all package dependencies for compilation was a bit of a hassle (although there are great projects like <a href="http://tug.org/mactex/">MacTeX</a> of course!). It certainly did not appeal to my desire to keep things versionized and automated. And as I had <a href="https://blog.thomasemmerling.de/automatic-pelican-publishing-on-github-pages-via-travisci.html">good experiences</a> with <a href="https://travis-ci.org/">Travis CI</a> and <a href="https://pages.github.com">GitHub Pages</a> I thought to give it a try for my CV, too. So, here we go.</p>
+<p>We will use TravisCI to run a docker container that uses an image with an updated <a href="http://tug.org/texlive/">TeX Live distribution</a>. This docker container will then compile the file 'cv.tex' into a nice PDF file on every commit (and push) to the GitHub repository. This PDF file, in turn, is then pushed to the <code>gh-pages</code> branch of the repository accompanied with an index.html that displays this very PDF and (if configured) a CNAME to customize the (sub-)domain under which this beautiful CV is available. Voila!
+You can see an example at <a href="http://cv.thomasemmerling.de">cv.thomasemmerling.de</a>.</p>
+<p>I that was a little too fast just head over to my GitHub repository <a href="https://github.com/thomastweets/cv-on-ghpages">cv-on-ghpages</a> and let me walk you through setting it up over there. It should be pretty straightforward - if not, please send me a comment, mail, tweet, issue, you name it.
+And good luck with this job application!</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Thu 28 January 2016</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/devops.html">devops</a>,      <a href="https://blog.thomasemmerling.de/tag/travis-ci.html">Travis CI</a>,      <a href="https://blog.thomasemmerling.de/tag/github-pages.html">GitHub Pages</a>,      <a href="https://blog.thomasemmerling.de/tag/git.html">git</a>,      <a href="https://blog.thomasemmerling.de/tag/continuous-integration.html">continuous integration</a>,      <a href="https://blog.thomasemmerling.de/tag/latex.html">LaTeX</a>,      <a href="https://blog.thomasemmerling.de/tag/cv.html">CV</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "automatic-latex-cv-publishing-on-github-pages-via-travisci.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

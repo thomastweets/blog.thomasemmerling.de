@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="owncloud, docker, nginx-proxy, note">
+
+  <title>
+    thomastweets
+&ndash; Owncloud on docker behind nginx-proxy: file size error solved  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/owncloud-on-docker-behind-nginx-proxy-file-size-error-solved.html">Owncloud on docker behind nginx-proxy: file size error solved</a></h3>
+  </div>
+  <div class="article_text">
+    <p>Wow, this took me a while: I am running an <a href="https://owncloud.org">Owncloud</a> server on my private VPS as a <a href="https://www.docker.com">Docker</a> container. I orchestrate all the different webapps that run on that server using <a href="https://docs.docker.com/compose/">Docker Compose</a> and make use of the magnificent <a href="https://github.com/jwilder/nginx-proxy">jwilder/nginx-proxy</a> (in combination with the <a href="https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion">docker-letsencrypt-nginx-proxy-companion</a>)to serve different domains on the same VPS.</p>
+<p>While I was using Owncloud I encountered a nasty upload error every now and then. Something like <code>Error downloading [file] - server replied: Request Entity Too Large</code> or <code>Continue blacklisting: Error downloading [file] - server replied: Request Entity Too Large</code> or simply <code>Error downloading [file] - server replied: Request Entity Too Large</code> and your file stays marked with a red cross or yellow exclamation mark. You get the point. There are a lot of <a href="https://doc.owncloud.org/server/9.1/admin_manual/configuration_files/big_file_upload_configuration.html">guides</a> on how to setup your <a href="https://httpd.apache.org">Apache</a> configuration to play nicely with Owncloud when it comes to bigger files. But in my case everything was set up using the <a href="https://hub.docker.com/_/owncloud/">official Owncloud docker image</a> that comes with all configuration files optimised already.</p>
+<p>Finally, today I <a href="https://forums.freenas.org/index.php?threads/owncloud-request-entity-too-large.41794/">realized</a> that the Nginx reverse proxy that is running in front of the Apache also demands configuration. Following <a href="https://github.com/jwilder/nginx-proxy#per-virtual_host">this part of the documentation</a> you want to volume mount the <code>/etc/nginx/vhost.d</code> folder and add a configuration file for your Owncloud domain:</p>
+<div class="highlight"><pre><span></span>client_max_body_size 4096m<span class="p">;</span>
+</pre></div>
+
+
+<p>Go ahead and reload the nginx container. You might have to move the files that did not sync out of your local Owncloud folder and move them back in for the sync process to trigger again. And you have nice green checkmarks again!</p>
+<p>Hoping that I save someone time and headaches...
+Cheers!</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Wed 01 March 2017</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/owncloud.html">owncloud</a>,      <a href="https://blog.thomasemmerling.de/tag/docker.html">docker</a>,      <a href="https://blog.thomasemmerling.de/tag/nginx-proxy.html">nginx-proxy</a>,      <a href="https://blog.thomasemmerling.de/tag/note.html">note</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "owncloud-on-docker-behind-nginx-proxy-file-size-error-solved.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

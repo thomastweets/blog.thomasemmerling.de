@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/thomasemmerling
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://blog.thomasemmerling.de
+  * I am thomasemmerling (https://keybase.io/thomasemmerling) on keybase.
+  * I have a public key ASBuIcwju66eIt0iAjJ4Ycb3FI7Wg5oTGp_TzQzwgCzrEAo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01206e21cc23bbae9e22dd2202327861c6f7148ed6839a131a9fd3cd0cf0802ceb100a",
+      "host": "keybase.io",
+      "kid": "01206e21cc23bbae9e22dd2202327861c6f7148ed6839a131a9fd3cd0cf0802ceb100a",
+      "uid": "d0be2a2f6633aac51eec84349e344b19",
+      "username": "thomasemmerling"
+    },
+    "merkle_root": {
+      "ctime": 1552348851,
+      "hash": "b053b906664d6d35ff1b0c3e4641593a1231fc46bad4198542b71c3a861ae9698239e06fc61409599356a5c55079cacc6b4fdc67a56892d567b34359c264aac8",
+      "hash_meta": "d784c3ba239a00d28a9b50ed703d067903b8d334e5b1d7f28ee68e5e85fa5cf0",
+      "seqno": 4925702
+    },
+    "service": {
+      "entropy": "84GKECWA0m7rU9eVd1JYbdJk",
+      "hostname": "blog.thomasemmerling.de",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "3.1.0"
+  },
+  "ctime": 1552348877,
+  "expire_in": 504576000,
+  "prev": "0fbb397ebb94b4c2975886bf72ea798beff27e185535ca51f79af2a973294f54",
+  "seqno": 8,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgbiHMI7uuniLdIgIyeGHG9xSO1oOaExqf080M8IAs6xAKp3BheWxvYWTESpcCCMQgD7s5fruUtMKXWIa/cup5i+/yfhhVNcpR95ryqXMpT1TEIEqKaqcC4Hyhu8VlxbQKv9lCf1mQEdYhwYgRYbN6CHGgAgHCo3NpZ8RA6YzRDMg/P6nqpwAF1j1hblxEbokE+OW6p9edpQuK67d2KgoWlPj/2lacW7du3peB7JgF6NtpuKdYR4dhkAosC6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIAhz231/Si0IoodnuRaoAljmHNi2yf9JVN5mBslV5Dx+o3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/thomasemmerling
+
+==================================================================

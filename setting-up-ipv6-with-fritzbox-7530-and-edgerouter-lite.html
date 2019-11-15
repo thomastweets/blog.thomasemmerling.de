@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="IPv6, network, Ubiquiti, EdgeRouter Lite, EdgeOS, Fritzbox 7530, AVM, Double-NAT">
+
+  <title>
+    thomastweets
+&ndash; Setting up IPv6 with FritzBox 7530 and EdgeRouter Lite  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/setting-up-ipv6-with-fritzbox-7530-and-edgerouter-lite.html">Setting up IPv6 with FritzBox 7530 and EdgeRouter Lite</a></h3>
+  </div>
+  <div class="article_text">
+    <p>I have been running a 'double NAT' setup for some years now: in the beginning because I had to due to my ISP regulations (yes, Ziggo.nl and plusnet, I am looking at you), nowadays as a deliberate choice to segment the network into ISP specific devices (mostly the SIP client) and my own network. On the WAN-facing side I am using a <a href="https://en.avm.de/products/fritzbox/fritzbox-7530/">FritzBox 7530</a>. Behind the FritzBox I use the almighty <a href="https://www.ui.com/edgemax/edgerouter-lite/">EdgeRouter Lite</a> that gives you a full-fledged <a href="https://en.wikipedia.org/wiki/Vyatta">Vyatta</a>-based router. However, with great power comes great responsibility so you have to do some digging if you want to configure certain features. Finally, I have a <a href="https://www.ui.com/unifi/unifi-ap-ac-pro/">Unifi AP AC Pro</a> as my WiFi access point - very recommendable piece of hardware but not the star of this blog post.</p>
+<p>Recently, I wanted to set up IPv6 again after having moved to a new place and a new ISP. This turned out to be a little longer journey and I decided to document it here, potentially for my future self ;)</p>
+<hr>
+<p>Let's start with the FritzBox (sorry for the German menu item names; my FritzBox version does not let me change the language setting). First of all, backup your current configuration (<code>System</code>-&gt;<code>Sicherung</code>)! You obviously want to enable IPv6 at <code>Internet</code> -&gt; <code>Zugangsdaten</code> -&gt; <code>IPv6</code>. Make sure that <code>IPv6-Unterstützung aktiv</code> is checked as well as (if your ISP still offers IPv4) <code>Native IPv4-Anbindung verwenden</code>. <code>DHCPv6 Rapid Commit verwenden</code> should also be active. This should already give you an IPv6 address that you can see in <code>Internet</code> -&gt; <code>Online-Monitor</code>.</p>
+<p>Next, you want to configure the announcing of IPv6 into the network and, therefore, towards the EdgeRouter. In <code>Heimnetz</code>-&gt; <code>Netzwerk</code>-&gt;<code>Netzwerkeinstellungen</code> scroll down and click on <code>IPv6-Adressen</code>. Select <code>Unique Local Addresses (ULA) zuweisen, solange keine IPv6-Internetverbindung besteht (empfohlen)</code>, deselect <code>Auch IPv6-Präfixe zulassen, die andere IPv6-Router im Heimnetz bekanntgeben</code>, select <code>Diese FRITZ!Box stellt den Standard-Internetzugang zur Verfügung</code>, and select <code>DNSv6-Server auch über Router Advertisement bekanntgeben (RFC 5006)</code>.</p>
+<p>Select <code>DHCPv6-Server in der FRITZ!Box für das Heimnetz aktivieren:</code> and <code>DNS-Server, Präfix (IA_PD) und IPv6-Adresse (IA_NA) zuweisen</code> (see also <a href="https://web.nettworks.org/wiki/pages/viewpage.action?pageId=35651587">here</a> as a reference). Finally click <code>OK</code>.</p>
+<p>As the last step on the FritzBox, you want to expose the EdgeRouter. Go to <code>Internet</code>-&gt;<code>Freigaben</code>-&gt;<code>Portfreigaben</code>. Click on <code>Gerät für Freigaben hinzufügen</code>. Select the hostname of the EdgeRouter (e.g. <code>ubnt</code>). Activate all checkmarks on this page (<code>Selbstständige Portfreigaben für dieses Gerät erlauben.</code>, <code>Dieses Gerät komplett für den Internetzugriff über IPv4 freigeben (Exposed Host).</code>, <code>PING6 freigeben.</code>, <code>Firewall für delegierte IPv6-Präfixe dieses Gerätes öffnen.</code>, <code>Dieses Gerät komplett für den Internetzugriff über IPv6 freigeben (Exposed Host).</code>). These settings will ensure that all IPv6 tests can pass making your network devices fully IPv6 compliant (see also <a href="https://www.bjoerns-techblog.de/2017/06/ipv6-icmp-filtered-an-fritzbox-beheben/">here</a>) - and also completely exposed to the internet! So we will need to take care of configuring the firewall on the EdgeRouter.</p>
+<hr>
+<p>On to the EdgeRouter Lite. A great set of helpful articles by Logan Marchione about setting up the EdgeRouter Lite can be found <a href="https://loganmarchione.com/2016/04/ubiquiti-edgerouter-lite-setup/">here</a>. Again, as a first step you should backup your configuration, either via the GUI or via SSH using <code>show configuration commands</code>. Then, it is a good idea to start fresh an run the <code>Basic Setup</code> Wizard. Please note that this wipes your current configuration!</p>
+<p>It is not necessary to set autoconf for IPv6 interfaces when IA_PD and IA_NA are served by the FritzBox (see above). You also do not need to explicitly set Router Advertisement (RA) when SLAAC is active on the WAN interface as the EdgeRouter is creating the RA automatically (see <a href="https://community.ubnt.com/t5/EdgeRouter/IPv6-Setup/m-p/1833655/highlight/true#M150102">here</a> for a more detailed explanation). Finally, you need to set up a firewall rule to allow incoming ICMPv6 packages (see also <a href="https://community.ubnt.com/t5/EdgeRouter/Filtered-ICMP-on-ipv6-test-com/m-p/2093368/highlight/true#M180948">here</a>).</p>
+<p>As a reference, I am posting part of my configuration below (created with <code>show configuration commands</code>). Please adapt to your needs before running it on your EdgeRouter.</p>
+<div class="highlight"><pre><span></span><span class="nb">set</span> firewall all-ping <span class="nb">enable</span>
+<span class="nb">set</span> firewall broadcast-ping disable
+<span class="nb">set</span> firewall ipv6-name WANv6_IN default-action drop
+<span class="nb">set</span> firewall ipv6-name WANv6_IN description <span class="s1">&#39;WAN inbound traffic forwarded to LAN&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN enable-default-log
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">10</span> action accept
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">10</span> description <span class="s1">&#39;Allow established/related sessions&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">10</span> state established <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">10</span> state related <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">20</span> action drop
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">20</span> description <span class="s1">&#39;Drop invalid state&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">20</span> state invalid <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">30</span> action accept
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">30</span> description <span class="s1">&#39;Allow IPv6 icmp&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_IN rule <span class="m">30</span> protocol ipv6-icmp
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL default-action drop
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL description <span class="s1">&#39;WAN inbound traffic to the router&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL enable-default-log
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">10</span> action accept
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">10</span> description <span class="s1">&#39;Allow established/related sessions&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">10</span> state established <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">10</span> state related <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">20</span> action drop
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">20</span> description <span class="s1">&#39;Drop invalid state&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">20</span> state invalid <span class="nb">enable</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">30</span> action accept
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">30</span> description <span class="s1">&#39;Allow IPv6 icmp&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">30</span> protocol ipv6-icmp
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">40</span> action accept
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">40</span> description <span class="s1">&#39;allow dhcpv6&#39;</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">40</span> destination port <span class="m">546</span>
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">40</span> protocol udp
+<span class="nb">set</span> firewall ipv6-name WANv6_LOCAL rule <span class="m">40</span> <span class="nb">source</span> port <span class="m">547</span>
+<span class="nb">set</span> firewall ipv6-receive-redirects disable
+<span class="nb">set</span> firewall ipv6-src-route disable
+<span class="nb">set</span> firewall ip-src-route disable
+<span class="nb">set</span> firewall log-martians <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_IN default-action drop
+<span class="nb">set</span> firewall name WAN_IN description <span class="s1">&#39;WAN to internal&#39;</span>
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">10</span> action accept
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">10</span> description <span class="s1">&#39;Allow established/related&#39;</span>
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">10</span> state established <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">10</span> state related <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">20</span> action drop
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">20</span> description <span class="s1">&#39;Drop invalid state&#39;</span>
+<span class="nb">set</span> firewall name WAN_IN rule <span class="m">20</span> state invalid <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_LOCAL default-action drop
+<span class="nb">set</span> firewall name WAN_LOCAL description <span class="s1">&#39;WAN to router&#39;</span>
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">10</span> action accept
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">10</span> description <span class="s1">&#39;Allow established/related&#39;</span>
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">10</span> state established <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">10</span> state related <span class="nb">enable</span>
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">20</span> action drop
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">20</span> description <span class="s1">&#39;Drop invalid state&#39;</span>
+<span class="nb">set</span> firewall name WAN_LOCAL rule <span class="m">20</span> state invalid <span class="nb">enable</span>
+<span class="nb">set</span> firewall receive-redirects disable
+<span class="nb">set</span> firewall send-redirects <span class="nb">enable</span>
+<span class="nb">set</span> firewall source-validation disable
+<span class="nb">set</span> firewall syn-cookies <span class="nb">enable</span>
+<span class="nb">set</span> interfaces ethernet eth0 address dhcp
+<span class="nb">set</span> interfaces ethernet eth0 description Internet
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth1 host-address <span class="s1">&#39;::1&#39;</span>
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth1 prefix-id <span class="s1">&#39;:1&#39;</span>
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth1 service slaac
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth2 host-address <span class="s1">&#39;::1&#39;</span>
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth2 prefix-id <span class="s1">&#39;:2&#39;</span>
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> interface eth2 service slaac
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd pd <span class="m">0</span> prefix-length /60
+<span class="nb">set</span> interfaces ethernet eth0 dhcpv6-pd rapid-commit <span class="nb">enable</span>
+<span class="nb">set</span> interfaces ethernet eth0 duplex auto
+<span class="nb">set</span> interfaces ethernet eth0 firewall in ipv6-name WANv6_IN
+<span class="nb">set</span> interfaces ethernet eth0 firewall in name WAN_IN
+<span class="nb">set</span> interfaces ethernet eth0 firewall <span class="nb">local</span> ipv6-name WANv6_LOCAL
+<span class="nb">set</span> interfaces ethernet eth0 firewall <span class="nb">local</span> name WAN_LOCAL
+<span class="nb">set</span> interfaces ethernet eth0 speed auto
+<span class="nb">set</span> interfaces ethernet eth1 address <span class="m">192</span>.168.40.1/24
+<span class="nb">set</span> interfaces ethernet eth1 description Local
+<span class="nb">set</span> interfaces ethernet eth1 duplex auto
+<span class="nb">set</span> interfaces ethernet eth1 speed auto
+<span class="nb">set</span> interfaces ethernet eth2 address <span class="m">192</span>.168.2.1/24
+<span class="nb">set</span> interfaces ethernet eth2 description <span class="s1">&#39;Local 2&#39;</span>
+<span class="nb">set</span> interfaces ethernet eth2 duplex auto
+<span class="nb">set</span> interfaces ethernet eth2 speed auto
+<span class="nb">set</span> interfaces loopback lo
+<span class="nb">set</span> port-forward auto-firewall <span class="nb">enable</span>
+<span class="nb">set</span> port-forward hairpin-nat <span class="nb">enable</span>
+<span class="nb">set</span> port-forward lan-interface eth1
+<span class="nb">set</span> port-forward wan-interface eth0
+<span class="nb">set</span> service dhcp-server disabled <span class="nb">false</span>
+<span class="nb">set</span> service dhcp-server hostfile-update disable
+<span class="nb">set</span> service dhcp-server shared-network-name LAN1 authoritative <span class="nb">enable</span>
+<span class="nb">set</span> service dhcp-server shared-network-name LAN1 subnet <span class="m">192</span>.168.40.0/24 default-router <span class="m">192</span>.168.40.1
+<span class="nb">set</span> service dhcp-server shared-network-name LAN1 subnet <span class="m">192</span>.168.40.0/24 dns-server <span class="m">192</span>.168.40.1
+<span class="nb">set</span> service dhcp-server shared-network-name LAN1 subnet <span class="m">192</span>.168.40.0/24 lease <span class="m">86400</span>
+<span class="nb">set</span> service dhcp-server shared-network-name LAN1 subnet <span class="m">192</span>.168.40.0/24 start <span class="m">192</span>.168.40.20 stop <span class="m">192</span>.168.40.200
+<span class="nb">set</span> service dhcp-server shared-network-name LAN2 authoritative <span class="nb">enable</span>
+<span class="nb">set</span> service dhcp-server shared-network-name LAN2 subnet <span class="m">192</span>.168.2.0/24 default-router <span class="m">192</span>.168.2.1
+<span class="nb">set</span> service dhcp-server shared-network-name LAN2 subnet <span class="m">192</span>.168.2.0/24 dns-server <span class="m">192</span>.168.2.1
+<span class="nb">set</span> service dhcp-server shared-network-name LAN2 subnet <span class="m">192</span>.168.2.0/24 lease <span class="m">86400</span>
+<span class="nb">set</span> service dhcp-server shared-network-name LAN2 subnet <span class="m">192</span>.168.2.0/24 start <span class="m">192</span>.168.2.38 stop <span class="m">192</span>.168.2.243
+<span class="nb">set</span> service dhcp-server static-arp disable
+<span class="nb">set</span> service dhcp-server use-dnsmasq disable
+<span class="nb">set</span> service dns forwarding cache-size <span class="m">150</span>
+<span class="nb">set</span> service dns forwarding listen-on eth1
+<span class="nb">set</span> service dns forwarding listen-on eth2
+<span class="nb">set</span> service gui http-port <span class="m">80</span>
+<span class="nb">set</span> service gui https-port <span class="m">443</span>
+<span class="nb">set</span> service gui older-ciphers <span class="nb">enable</span>
+<span class="nb">set</span> service nat rule <span class="m">5010</span> description <span class="s1">&#39;masquerade for WAN&#39;</span>
+<span class="nb">set</span> service nat rule <span class="m">5010</span> outbound-interface eth0
+<span class="nb">set</span> service nat rule <span class="m">5010</span> <span class="nb">type</span> masquerade
+<span class="nb">set</span> service ssh port <span class="m">22</span>
+<span class="nb">set</span> service ssh protocol-version v2
+<span class="nb">set</span> service unms disable
+<span class="nb">set</span> system gateway-address <span class="m">192</span>.168.178.1
+<span class="nb">set</span> system host-name ubnt
+<span class="nb">set</span> system ntp server <span class="m">0</span>.ubnt.pool.ntp.org
+<span class="nb">set</span> system ntp server <span class="m">1</span>.ubnt.pool.ntp.org
+<span class="nb">set</span> system ntp server <span class="m">2</span>.ubnt.pool.ntp.org
+<span class="nb">set</span> system ntp server <span class="m">3</span>.ubnt.pool.ntp.org
+<span class="nb">set</span> system syslog global facility all level notice
+<span class="nb">set</span> system syslog global facility protocols level debug
+<span class="nb">set</span> system time-zone Europe/Berlin
+</pre></div>
+
+
+<p>I found some helpful commands for debugging in <a href="https://kazoo.ga/dhcpv6-pd-for-native-ipv6/">this article</a> describing the IPv6 setup for the EdgeRouter Lite. Also a tcpdump command for ICMPv6 packets on the EdgeRouter itself can help a lot when debugging:</p>
+<div class="highlight"><pre><span></span>sudo tcpdump -n -i eth1 icmp6 and ip6<span class="o">[</span><span class="m">40</span><span class="o">]==</span><span class="m">133</span> or ip6<span class="o">[</span><span class="m">40</span><span class="o">]==</span><span class="m">134</span>
+</pre></div>
+
+
+<p>If you made it this far you are hopefully ready to enjoy a full 20/20 score on <a href="http://ipv6-test.com/">ipv6-test.com</a>. Congratulations!</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Mon 11 March 2019</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/ipv6.html">IPv6</a>,      <a href="https://blog.thomasemmerling.de/tag/network.html">network</a>,      <a href="https://blog.thomasemmerling.de/tag/ubiquiti.html">Ubiquiti</a>,      <a href="https://blog.thomasemmerling.de/tag/edgerouter-lite.html">EdgeRouter Lite</a>,      <a href="https://blog.thomasemmerling.de/tag/edgeos.html">EdgeOS</a>,      <a href="https://blog.thomasemmerling.de/tag/fritzbox-7530.html">Fritzbox 7530</a>,      <a href="https://blog.thomasemmerling.de/tag/avm.html">AVM</a>,      <a href="https://blog.thomasemmerling.de/tag/double-nat.html">Double-NAT</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "setting-up-ipv6-with-fritzbox-7530-and-edgerouter-lite.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

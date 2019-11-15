@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="automatization, IFTTT, twitter, atom feed">
+
+  <title>
+    thomastweets
+&ndash; If I post, you tweet!  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/if-i-post-you-tweet.html">If I post, you tweet!</a></h3>
+  </div>
+  <div class="article_text">
+    <p>When I set up the <a href="https://blog.thomasemmerling.de/automatic-pelican-publishing-on-github-pages-via-travisci.html">automatic pelican publishing</a> I did not want to stop there to automatize things. I am a late adopter when it comes to Twitter and have only recently started to use it on a regular basis. And more tweets seem to be a good thing on this platform. So why not throw in some tweets when I write new content here on my blog? But do it manually? Nah...</p>
+<p>Say hello to IF-This-Then-That or, shorter, <a href="https://ifttt.com">IFTTT</a>. This is a service to make short program routines (called <em>recipes</em>) that run automatically and can make your modern digital life much easier when it comes to connectability between alls kinds of apps and services. By now (July 2015) they support an impressive 196 so-called <em>channels</em> that serve as the connections to bespoke apps and services. Users can share their recipes and your problem has been probably solved by someone else already.</p>
+<p>I went ahead and created a recipe that would monitor the <a href="http://blog.thomasemmerling.de/feeds/all.atom.xml">atom feed</a> of this blog and post a new tweet to my <a href="https://twitter.com/thomastweets">Twitter account</a> everytime there is a new blog post. You can have a look at the recipe <a href="https://ifttt.com/recipes/304261-tweet-every-new-blog-post">here</a>. Actually, it's straightforward to create your own recipes there, so go ahead and try it out!</p>
+<p>By the way, I just tweeted about this blog post...</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Thu 02 July 2015</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/automatization.html">automatization</a>,      <a href="https://blog.thomasemmerling.de/tag/ifttt.html">IFTTT</a>,      <a href="https://blog.thomasemmerling.de/tag/twitter.html">twitter</a>,      <a href="https://blog.thomasemmerling.de/tag/atom-feed.html">atom feed</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "if-i-post-you-tweet.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="devops, Travis CI, GitHub Pages, Pelican, git, continuous integration">
+
+  <title>
+    thomastweets
+&ndash; Automatic Pelican publishing on GitHub Pages via TravisCI  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/automatic-pelican-publishing-on-github-pages-via-travisci.html">Automatic Pelican publishing on GitHub Pages via TravisCI</a></h3>
+  </div>
+  <div class="article_text">
+    <p>As I wrote in the <a href="https://blog.thomasemmerling.de/fresh-starts.html">last blog post</a>, the <em>static site generator</em> that I use to publish this post is <a href="http://getpelican.com/">Pelican</a>. Rather than generating the HTML on my machine and then pushing it to the <code>gh-pages</code> branch of <a href="https://github.com/thomastweets/blog.thomasemmerling.de">github.com/thomastweets/blog.thomasemmerling.de</a> I automatized this process using <a href="https://travis-ci.org/">Travis CI</a>. Travis CI is a <a href="https://en.wikipedia.org/wiki/Continuous_integration">continuous integration</a> that is free to use for open source projects. It can not only run automated tests of your project but also trigger deployment tasks when the build is successful.</p>
+<p>Using information from <a href="http://blog.mathieu-leplatre.info/publish-your-pelican-blog-on-github-pages-via-travis-ci.html">two</a> <a href="https://zonca.github.io/2013/09/automatically-build-pelican-and-publish-to-github-pages.html">blogs</a> I was able to let Travis CI react on any push to GitHub and automatically generate HTML from the Pelican sources and push them back to the <code>gh-pages</code> branch. Here is how to do that:</p>
+<ul>
+<li>If you have not done that yet: Create a repository on GitHub called (<em>e.g.</em>) <code>blog.thomasemmerling.de</code>.</li>
+<li>Add it as a remote to your local git repository from command line (if you use ssh-keys for authentication - you should do so! <a href="https://help.github.com/articles/generating-ssh-keys/">how to generate</a> and <a href="https://help.github.com/articles/changing-a-remote-s-url/">use</a> them):</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Go to your local Pelican sources</span>
+<span class="nb">cd</span> ~/blog
+<span class="c1"># Add the remote GitHub repository</span>
+git remote add origin git@github.com:thomastweets/blog.thomasemmerling.de.git
+<span class="c1"># set the default upstream and push to it</span>
+git push --set-upstream origin master
+</pre></div>
+
+
+<ul>
+<li>As Travis CI needs to be able to push to your GitHub repository you need to authenticate it. As you do not want to store any passwords, ssh, or API keys in your repo or the Travis CI configuration the easiest way is to use the <code>travis</code> command line tool that is available as a gem to encrypt an Authentication Token for GitHub so that Travis CI can decrypt it when needed. First we need to install it:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># on OSX using the default Ruby installation</span>
+sudo gem install travis
+</pre></div>
+
+
+<ul>
+<li>Now we create a personal access token on GitHub to use with Travis CI. Follow <a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use/">these instructions</a> to do so. I named mine <code>TravisCI blog.thomasemmerling.de</code> and kept the standard scope settings. Copy the token when you created it as you will not be able to see it again after you close the page.</li>
+<li>Encrypt the token with the <code>travis</code> command line tool:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># where &#39;your_token&#39; is the token from the last step</span>
+travis encrypt <span class="nv">GH_TOKEN</span><span class="o">=</span>your_token
+</pre></div>
+
+
+<ul>
+<li>Create a file <code>.travis.yml</code> (mind the dot at the beginning!) in the root of your git repository and paste the following (replace the encrypted part after <code>- secure:</code> with what <code>travis encrypt</code> got back to you):</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<span class="n">branches</span><span class="o">:</span>
+  <span class="n">only</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">master</span>
+<span class="n">install</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pelican</span>
+<span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">ghp</span><span class="o">-</span><span class="k">import</span>
+<span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">markdown</span>
+<span class="n">script</span><span class="o">:</span>
+<span class="o">-</span> <span class="n">make</span> <span class="n">publish</span>
+<span class="o">-</span> <span class="n">make</span> <span class="n">github</span>
+<span class="n">env</span><span class="o">:</span>
+  <span class="n">global</span><span class="o">:</span>
+  <span class="o">-</span> <span class="n">secure</span><span class="o">:</span> <span class="s2">&quot;A4MpKClryaExBapCaXO3bgATD1KK/SmrdmPz7vk+6aUcJbOnQ/r2A1xjtCUv09PWW+QlA8SRBV626H7tfIONlXwLIn9tt6ZA419uoUWMs8Z2DsLvpHZtmP4TVi4Vi192TQDGqGwCh48aakhHlzWm0DTQKtn2MIJuUGOVOeT8DVhvT0jLOxYLAiRRuJI4OR6hVzHWH0Wa8U2BLC+iNsWn+RKro/HzzilY9p62nAahWe0toqltazQHq8AFMbc9BFuucMbfU/fpPYq1tesacQZG1gUFhs2TG1v7addJY63E0jaQ6jWSLgNdMibEvwmjrkKIeqF0E7J1/xZfoNg2KQpVFARqDkl4NOaf6T4inCaBAlvyxVQ6JszdkasM2AX3zzrg/Ph4ooRQ9sxdshq6g69tWbuDWkUGJMEfcKGfH9cbATeR87TXZZo0J5WajzNae1+zv86E2tVYmQM7wJwdve48wi6q+QpGWShMrT5VVOyLZ5txSYDPKgjCU7LrKqWmwVqEeZC8b49rSam6vsC1QAKsMQ+oiseZFuVAh+ZMpW9Tes9kSSQ1wX/zSepM3jbv+1dIpsjrJNZgQasR/yLAM7QjLQz8TwYG2LNPtOG/gWwdA/txLqGFAWnEgqFXeykbLgFwuFucdRe9I3yFi5VLTbwXw6FonWrjWOvSzKzNydP+fTw=&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>In the <code>Makefile</code> in the root directory add (or change) the <code>github</code> subcommand (this makes the <code>make github</code> command in the <code>.travis.yml</code> file work):</li>
+</ul>
+<div class="highlight"><pre><span></span>github: publish
+    ghp-import -n <span class="k">$(</span>OUTPUTDIR<span class="k">)</span>
+    @git push -fq https://<span class="si">${</span><span class="nv">GH_TOKEN</span><span class="si">}</span>@github.com/<span class="k">$(</span>TRAVIS_REPO_SLUG<span class="k">)</span>.git gh-pages &gt; /dev/null
+</pre></div>
+
+
+<ul>
+<li>Add the <code>.travis.yml</code> file and the <code>Makefile</code> to your git repository, commit, and push to GitHub.</li>
+</ul>
+<p>Now, if all went well, after some minutes you should see a successful build in Travis CI and the new version of your homepage/blog at the <code>.github.io</code> address (or in my case the custom domain).</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Sat 27 June 2015</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/devops.html">devops</a>,      <a href="https://blog.thomasemmerling.de/tag/travis-ci.html">Travis CI</a>,      <a href="https://blog.thomasemmerling.de/tag/github-pages.html">GitHub Pages</a>,      <a href="https://blog.thomasemmerling.de/tag/pelican.html">Pelican</a>,      <a href="https://blog.thomasemmerling.de/tag/git.html">git</a>,      <a href="https://blog.thomasemmerling.de/tag/continuous-integration.html">continuous integration</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "automatic-pelican-publishing-on-github-pages-via-travisci.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>

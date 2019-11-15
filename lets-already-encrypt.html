@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ## for client-side less
+  <link rel="stylesheet/less" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.less">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
+  -->
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="https://blog.thomasemmerling.de/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Thomas Emmerling">
+  <meta name="description" content="Posts and writings by Thomas Emmerling">
+
+  <link href="https://blog.thomasemmerling.de/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="thomastweets Atom" />
+
+<meta name="keywords" content="SSL, HTTPS, VPS, server, security">
+
+  <title>
+    thomastweets
+&ndash; Let's already encrypt!  </title>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-64421857-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+
+<body>
+  <aside>
+    <div id="user_meta">
+      <a href="https://blog.thomasemmerling.de">
+        <img src="https://www.gravatar.com/avatar/46624cc77f30ff81855f6fdd94fbd6f1?s=140" alt="logo">
+      </a>
+      <h2><a href="https://blog.thomasemmerling.de">Thomas Emmerling</a></h2>
+      <p>notes on data analysis, programming, and the rest</p>
+      <ul>
+        <li><a href="https://blog.thomasemmerling.de/pages/about.html">About</a></li>
+        <li><a href="https://blog.thomasemmerling.de/pages/projects.html">Projects</a></li>
+      </ul>
+      <br>
+      <a href="http://twitter.com/thomastweets" target="_blank"><i class="fa fa-twitter-square fa-2x"></i></a>
+      <a href="https://www.linkedin.com/in/thomasemmerling" target="_blank"><i class="fa fa-linkedin-square fa-2x"></i></a>
+      <a href="http://github.com/thomastweets" target="_blank"><i class="fa fa-github-square fa-2x"></i></a>
+    </div>
+  </aside>
+
+  <main>
+    <header>
+      <p>
+      <a href="https://blog.thomasemmerling.de">Index</a> &brvbar; <a href="https://blog.thomasemmerling.de/archives.html">Archives</a>
+      &brvbar; <a href="https://blog.thomasemmerling.de/feeds/all.atom.xml">Atom</a>
+      </p>
+    </header>
+
+<article>
+  <div class="article_title">
+    <h3><a href="https://blog.thomasemmerling.de/lets-already-encrypt.html">Let's already encrypt!</a></h3>
+  </div>
+  <div class="article_text">
+    <p>It seems that the internet finally understood that encryption is a necessity. Recently, the brilliant guys of <a href="https://letsencrypt.org">Let's Encrypt</a> started their beta program and I got myself an invite for it. They <a href="https://letsencrypt.org/2015/11/12/public-beta-timing.html">announced</a> that they will open their beta to the public tomorrow and I thought that this is a good moment to show off the small script that I used until now before it vanishes into obsolescence.</p>
+<p>Before <a href="https://letsencrypt.org">Let's Encrypt</a> came along <a href="https://www.startssl.com">StartSSL</a> was one way to obtain a ssl certificate at no cost. However, the workflow of creating and installing the certificates was not very straight forward which led to <a href="https://konklone.com/post/switch-to-https-now-for-free">some</a> <a href="https://joshemerson.co.uk/blog/secure-your-site">blogposts</a> trying to help the novice user. I wanted to streamline the process so that I could have SSL certificates for some domains including all kinds of subdomains in place. As the free StartSSL certificates are not wildcard certificates this called for some scripting.</p>
+<p>You can look at the code at <a href="https://github.com/thomastweets/setupSSL">github.com/thomastweets/setupSSL</a>. There is small ReadMe and some settings in the bash script. Things should be pretty self-explanatory - otherwise just send me a message!
+From tomorrow on <a href="https://letsencrypt.org">Let's Encrypt</a> might be the better choice. But no matter which tool you use: encrypt your traffic!</p>
+  </div>
+  <div class="article_meta">
+    <p>Posted on: Wed 02 December 2015</p>
+    <p>Category: <a href="https://blog.thomasemmerling.de/category/tech.html">Tech</a>
+ &ndash; Tags:
+      <a href="https://blog.thomasemmerling.de/tag/ssl.html">SSL</a>,      <a href="https://blog.thomasemmerling.de/tag/https.html">HTTPS</a>,      <a href="https://blog.thomasemmerling.de/tag/vps.html">VPS</a>,      <a href="https://blog.thomasemmerling.de/tag/server.html">server</a>,      <a href="https://blog.thomasemmerling.de/tag/security.html">security</a>    </p>
+  </div>
+
+  <div id="article_comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_identifier = "lets-already-encrypt.html";
+        (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//thomastweets.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+    </script>
+  </div>
+
+</article>
+
+
+    <div id="ending_message">
+      <p>&copy; Thomas Emmerling. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Theme by Giulio Fidente on <a href="https://github.com/gfidente/pelican-svbhack" target="_blank">github</a>. </p>
+    </div>
+  </main>
+</body>
+</html>
